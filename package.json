@@ -1,27 +1,50 @@
 {
   "name": "markdown-converter",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --mac"
+    "start": "pnpm build:ui && electron .",
+    "build": "pnpm build:ui && electron-builder --mac",
+    "test": "pnpm build:ui && node --test tests/*.test.js",
+    "test:e2e": "pnpm build:ui && node tests/electron-smoke.js",
+    "qa": "pnpm typecheck && pnpm test && pnpm test:e2e",
+    "prepare:composio": "node scripts/prepare-composio.js",
+    "build:x64": "pnpm build:ui && electron-builder --mac --x64",
+    "build:ui": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test:ui": "pnpm build:ui && node --test tests/renderer-ui.test.js"
   },
   "build": {
     "appId": "com.paulyerrick.markdown-converter",
     "productName": "Markdown Converter",
     "mac": {
       "target": "dmg",
-      "category": "public.app-category.utilities"
+      "icon": "build/icon.icns",
+      "category": "public.app-category.utilities",
+      "extendInfo": {
+        "LSUIElement": true
+      }
     },
     "files": [
+      "conversion-worker.js",
+      "conversion-runner.js",
+      "destinations.js",
+      "connections.js",
       "main.js",
       "preload.js",
       "converter.js",
-      "renderer.js",
       "index.html",
-      "styles.css",
       "assets/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "THIRD-PARTY-NOTICES.txt",
+      "renderer-ui/**/*"
+    ],
+    "beforePack": "scripts/prepare-composio.js",
+    "extraResources": [
+      {
+        "from": "vendor/composio-darwin-${arch}",
+        "to": "composio"
+      }
     ]
   },
   "dependencies": {
@@ -31,6 +54,24 @@
   },
   "devDependencies": {
     "electron": "^33.0.0",
-    "electron-builder": "^25.1.8"
-  }
+    "electron-builder": "^25.1.8",
+    "jszip": "3.10.1",
+    "playwright": "1.56.1",
+    "typescript": "5.9.3",
+    "vite": "7.3.2",
+    "@tailwindcss/vite": "4.2.4",
+    "tailwindcss": "4.2.4",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "jsdom": "29.1.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "lucide-react": "0.577.0",
+    "class-variance-authority": "0.7.1",
+    "@radix-ui/react-slot": "1.2.4",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.5.0"
+  },
+  "description": "Review and edit converted Markdown, then save locally or to connected accounts.",
+  "packageManager": "pnpm@11.20.0"
 }

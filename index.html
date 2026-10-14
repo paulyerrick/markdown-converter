@@ -2,38 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'">
   <title>Markdown Converter</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="renderer-ui/style.css">
 </head>
 <body>
-  <div class="titlebar"></div>
-  <div class="container">
-    <h1>Markdown Converter</h1>
-    <p class="subtitle">Drop a file or paste content</p>
-
-    <div id="drop-zone">
-      <div class="icon">&#128196;</div>
-      <div class="label">Drop a file here or click to browse</div>
-      <div class="hint">PDF, DOCX, HTML, TXT</div>
-    </div>
-
-    <button id="btn-browse" class="browse-btn">Open from Finder...</button>
-
-    <div class="url-bar">
-      <input type="text" id="url-input" placeholder="Or paste a website URL here...">
-      <button id="btn-fetch">Fetch</button>
-    </div>
-
-    <div id="status"></div>
-
-    <textarea id="output" readonly></textarea>
-
-    <div id="actions">
-      <button id="btn-copy" class="primary">Copy</button>
-      <button id="btn-save">Save as .md</button>
-      <button id="btn-clear">Clear</button>
-    </div>
-  </div>
-  <script src="renderer.js"></script>
+  <div id="root"></div>
+  <script src="renderer-ui/app.js"></script>
 </body>
 </html>
